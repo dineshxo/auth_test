@@ -1,10 +1,13 @@
 import 'package:auth_test/components/mainButton.dart';
 import 'package:auth_test/constants/colours.dart';
 import 'package:auth_test/constants/styles.dart';
+import 'package:auth_test/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
-  const Register({super.key});
+  final Function toggle;
+
+  const Register({super.key, required this.toggle});
 
   @override
   State<Register> createState() => _RegisterState();
@@ -12,8 +15,11 @@ class Register extends StatefulWidget {
 
 final _formKey = GlobalKey<FormState>();
 
+final AuthServices _auth = AuthServices();
+
 String email = "";
 String password = "";
+String error = "";
 
 class _RegisterState extends State<Register> {
   @override
@@ -23,7 +29,7 @@ class _RegisterState extends State<Register> {
       appBar: AppBar(
         backgroundColor: bgColor,
         title: const Text(
-          "Login",
+          "Register",
           style: appBarText,
         ),
       ),
@@ -46,6 +52,7 @@ class _RegisterState extends State<Register> {
                   child: Column(
                     children: [
                       TextFormField(
+                        style: const TextStyle(color: Colors.white),
                         decoration: textFieldDecoration,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -63,6 +70,7 @@ class _RegisterState extends State<Register> {
                         height: 10,
                       ),
                       TextFormField(
+                        style: const TextStyle(color: Colors.white),
                         decoration:
                             textFieldDecoration.copyWith(hintText: "Password"),
                         validator: (value) {
@@ -79,6 +87,10 @@ class _RegisterState extends State<Register> {
                       ),
                     ],
                   )),
+            ),
+            Text(
+              error,
+              style: const TextStyle(color: Colors.red),
             ),
             const SizedBox(
               height: 10,
@@ -104,9 +116,11 @@ class _RegisterState extends State<Register> {
                   style: bodyText,
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      widget.toggle();
+                    },
                     child: const Text(
-                      "Register",
+                      "Sign in",
                       style: TextStyle(
                           color: mainYellow,
                           fontWeight: FontWeight.bold,
@@ -115,8 +129,17 @@ class _RegisterState extends State<Register> {
               ],
             ),
             mainButton(
-              text: "Log in",
-              onTap: () {},
+              text: "Sign Up",
+              onTap: () async {
+                dynamic result =
+                    await _auth.registerWithEmailPassword(email, password);
+
+                if (result == null) {
+                  setState(() {
+                    error = "Enter Valid Email";
+                  });
+                }
+              },
             ),
             const SizedBox(
               height: 15,

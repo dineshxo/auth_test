@@ -5,7 +5,9 @@ import 'package:auth_test/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  final Function toggle;
+
+  const Login({super.key, required this.toggle});
 
   @override
   State<Login> createState() => _LoginState();
@@ -49,6 +51,7 @@ class _LoginState extends State<Login> {
                   child: Column(
                     children: [
                       TextFormField(
+                        style: const TextStyle(color: Colors.white),
                         decoration: textFieldDecoration,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -66,6 +69,7 @@ class _LoginState extends State<Login> {
                         height: 10,
                       ),
                       TextFormField(
+                        style: const TextStyle(color: Colors.white),
                         decoration:
                             textFieldDecoration.copyWith(hintText: "Password"),
                         validator: (value) {
@@ -107,7 +111,9 @@ class _LoginState extends State<Login> {
                   style: bodyText,
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      widget.toggle();
+                    },
                     child: const Text(
                       "Register",
                       style: TextStyle(
@@ -118,7 +124,7 @@ class _LoginState extends State<Login> {
               ],
             ),
             mainButton(
-              text: "Log in",
+              text: "Sign in",
               onTap: () {},
             ),
             const SizedBox(
