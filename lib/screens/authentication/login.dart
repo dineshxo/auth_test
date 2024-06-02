@@ -20,6 +20,7 @@ class _LoginState extends State<Login> {
 
   String email = "";
   String password = "";
+  String error = "";
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +71,7 @@ class _LoginState extends State<Login> {
                       ),
                       TextFormField(
                         style: const TextStyle(color: Colors.white),
+                        obscureText: true,
                         decoration:
                             textFieldDecoration.copyWith(hintText: "Password"),
                         validator: (value) {
@@ -89,6 +91,10 @@ class _LoginState extends State<Login> {
             ),
             const SizedBox(
               height: 10,
+            ),
+            Text(
+              error,
+              style: const TextStyle(color: Colors.red),
             ),
             const Text(
               "Login With Google",
@@ -125,7 +131,16 @@ class _LoginState extends State<Login> {
             ),
             mainButton(
               text: "Sign in",
-              onTap: () {},
+              onTap: () async {
+                dynamic result =
+                    await _auth.signInWithEmailPassword(email, password);
+                if (result == null) {
+                  print("Wrong Credentials!");
+                  setState(() {
+                    error = "Error - User Credentials doesn't match!";
+                  });
+                }
+              },
             ),
             const SizedBox(
               height: 15,

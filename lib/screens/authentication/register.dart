@@ -70,6 +70,7 @@ class _RegisterState extends State<Register> {
                         height: 10,
                       ),
                       TextFormField(
+                        obscureText: true,
                         style: const TextStyle(color: Colors.white),
                         decoration:
                             textFieldDecoration.copyWith(hintText: "Password"),
@@ -136,7 +137,7 @@ class _RegisterState extends State<Register> {
 
                 if (result == null) {
                   setState(() {
-                    error = "Enter Valid Email";
+                    error = "Please Enter a Valid Email";
                   });
                 }
               },
